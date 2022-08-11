@@ -67,39 +67,66 @@ class ArchTabs:
         # Declare instance attributes
         self.actions = []
         self.menu = self.tr(u'&ArchTabs')
-
+        self.dlg = ArchTabsDialog()
+        self.layers = QgsProject.instance().layerTreeRoot().children()
+        self.turning_p_box = self.dlg.TurningPointsBox
+        self.landmarks_box = self.dlg.LandmarksBox
+        self.bench_box = self.dlg.BenchmarkBox
+        self.turn_order = self.dlg.TurningOrder
+        self.land_names = self.dlg.LandmarksName
+        self.crs_box = self.dlg.CrsBox
+        self.proj_check = self.dlg.ProjectionCheck
+        self.mult_check = self.dlg.MultCheckBox
+        self.start_spin = self.dlg.StartSpinBox
+        self.end_spin = self.dlg.EndSpinBox
+        self.add = self.dlg.AddButton
+        self.parts_table = self.dlg.PartsTable
+        self.multi_warn = self.dlg.MultiWarn
+        self.rem_button = self.dlg.RemoveButton
+        self.surf_check = self.dlg.SurfaceCheckBox
+        self.surf_label = self.dlg.SurfaceLabel
+        self.surf_box = self.dlg.SurfaceComboBox
+        self.de_button = self.dlg.Deutch
+        self.en_button = self.dlg.English
+        self.ru_button = self.dlg.Russian
+        self.run_button = self.dlg.runButton
+        self.landmarks_err = self.dlg.landmarksLabel
+        self.benchmark_err = self.dlg.benchmarkLabel
+        self.t_points_err = self.dlg.turningpointsLabel
+        self.file_err = self.dlg.fileLabel
+        self.success = self.dlg.successLabel
         # Check if plugin was started the first time in current QGIS session
         # Must be set in initGui() to survive plugin reloads
-        self.first_start = None
-        self.output_file = None
-        self.dlg = None
-        self.layers = QgsProject.instance().layerTreeRoot().children()
-        self.turning_p_box = None
-        self.landmarks_box = None
-        self.bench_box = None
-        self.turn_order = None
-        self.land_names = None
-        self.crs_box = None
-        self.proj_check = None
-        self.mult_check = None
-        self.start_spin = None
-        self.end_spin = None
-        self.add = None
-        self.multi_warn = None
-        self.parts_table = None
-        self.rem_button = None
-        self.surf_check = None
-        self.surf_label = None
-        self.surf_box = None
-        self.de_button = None
-        self.en_button = None
-        self.ru_button = None
-        self.run_button = None
-        self.landmarks_err = None
-        self.benchmark_err = None
-        self.t_points_err = None
-        self.file_err = None
-        self.success = None
+        # self.first_start = None
+        # self.output_file = None
+        # self.dlg = None
+        # self.layers = QgsProject.instance().layerTreeRoot().children()
+        # self.turning_p_box = None
+        # self.landmarks_box = None
+        # self.bench_box = None
+        # self.turn_order = None
+        # self.land_names = None
+        # self.crs_box = None
+        # self.proj_check = None
+        # self.mult_check = None
+        # self.start_spin = None
+        # self.end_spin = None
+        # self.add = None
+        # self.multi_warn = None
+        # self.parts_table = None
+        # self.rem_button = None
+        # self.surf_check = None
+        # self.surf_label = None
+        # self.surf_box = None
+        # self.de_button = None
+        # self.en_button = None
+        # self.ru_button = None
+        # self.run_button = None
+        # self.landmarks_err = None
+        # self.benchmark_err = None
+        # self.t_points_err = None
+        # self.file_err = None
+        # self.success = None
 
     # noinspection PyMethodMayBeStatic
     def tr(self, message):
@@ -244,13 +271,13 @@ class ArchTabs:
             log.error(f"projects layers was changed {e}")
 
     def show_fields(self, key: str) -> None:
-        if key is "points":
+        if key is "points" and self.turn_order:
             self.turn_order.clear()
             self.turn_order.addItems([field.name()
                                       for field in self.layers
                                       [self.turning_p_box.currentIndex()].
                                      layer().fields()])
-        elif key is "names":
+        elif key is "names" and self.land_names:
             self.land_names.clear()
             self.land_names.addItems([field.name()
                                       for field in self.layers
@@ -258,12 +285,14 @@ class ArchTabs:
                                      layer().fields()])
 
     def clear_boxes(self) -> None:
-        self.turning_p_box.clear()
-        self.landmarks_box.clear()
-        self.bench_box.clear()
-        self.turn_order.clear()
-        self.land_names.clear()
-        self.surf_box.clear()
+        if (self.turning_p_box and self.landmarks_box and self.bench_box and
+           self.turn_order and self.land_names and self.surf_box):
+            self.turning_p_box.clear()
+            self.landmarks_box.clear()
+            self.bench_box.clear()
+            self.turn_order.clear()
+            self.land_names.clear()
+            self.surf_box.clear()
 
     def proj_checkbox(self):
         if self.proj_check.isChecked():
@@ -310,8 +339,8 @@ class ArchTabs:
                 table.removeRow(0)
 
     def insert_into_table(self):
-
-        self.multi_warn.hide()
+        if self.multi_warn:
+            self.multi_warn.hide()
         start, end = self.start_spin.value(), self.end_spin.value()
         if (start is 0) or (end is 0) or (start is end):
             self.multi_warn.show()
@@ -397,7 +426,8 @@ class ArchTabs:
     def handle(self) -> None:
         dh = DataHandler()
         xl = XlHandler()
-        self.success.hide()
+        if self.success:
+            self.success.hide()
         self.hide_errs()
         errors = list()
         user_data = self.get_basic_values()
@@ -450,20 +480,25 @@ class ArchTabs:
             self.file_err.show()
 
     def hide_errs(self):
-        self.multi_warn.hide()
-        self.landmarks_err.hide()
-        self.benchmark_err.hide()
-        self.t_points_err.hide()
-        self.file_err.hide()
+        if (self.multi_warn and self.landmarks_err.hide and self.benchmark_err
+           and self.t_points_err and self.file_err):
+            self.multi_warn.hide()
+            self.landmarks_err.hide()
+            self.benchmark_err.hide()
+            self.t_points_err.hide()
+            self.file_err.hide()
 
     def set_labels(self) -> None:
-        self.multi_warn.setText("<font color='red'>check your data</font>")
-        self.run_button.setStyleSheet("background-color: #31AB17")
-        self.landmarks_err.setText("<font color='red'>check this data</font>")
-        self.benchmark_err.setText("<font color='red'>check this data</font>")
-        self.t_points_err.setText("<font color='red'>check this data</font>")
-        self.file_err.setText("<font color='red'>check output file</font>")
-        self.success.setText("<font color='#31AB17'>Completed!</font>")
+        if (self.multi_warn and self.run_button and self.landmarks_err and
+                self.benchmark_err and self.t_points_err and self.file_err
+                and self.success):
+            self.multi_warn.setText("<font color='red'>check your data</font>")
+            self.run_button.setStyleSheet("background-color: #31AB17")
+            self.landmarks_err.setText("<font color='red'>check this data</font>")
+            self.benchmark_err.setText("<font color='red'>check this data</font>")
+            self.t_points_err.setText("<font color='red'>check this data</font>")
+            self.file_err.setText("<font color='red'>check output file</font>")
+            self.success.setText("<font color='#31AB17'>Completed!</font>")
 
     def run(self):
         """Run method that performs all the real work"""
@@ -475,33 +510,34 @@ class ArchTabs:
 
         if self.first_start:
             self.first_start = False
-            self.dlg = ArchTabsDialog()
-            self.turning_p_box = self.dlg.TurningPointsBox
-            self.landmarks_box = self.dlg.LandmarksBox
-            self.bench_box = self.dlg.BenchmarkBox
-            self.turn_order = self.dlg.TurningOrder
-            self.land_names = self.dlg.LandmarksName
-            self.crs_box = self.dlg.CrsBox
-            self.proj_check = self.dlg.ProjectionCheck
-            self.mult_check = self.dlg.MultCheckBox
-            self.start_spin = self.dlg.StartSpinBox
-            self.end_spin = self.dlg.EndSpinBox
-            self.add = self.dlg.AddButton
-            self.parts_table = self.dlg.PartsTable
-            self.multi_warn = self.dlg.MultiWarn
-            self.rem_button = self.dlg.RemoveButton
-            self.surf_check = self.dlg.SurfaceCheckBox
-            self.surf_label = self.dlg.SurfaceLabel
-            self.surf_box = self.dlg.SurfaceComboBox
-            self.de_button = self.dlg.Deutch
-            self.en_button = self.dlg.English
-            self.ru_button = self.dlg.Russian
-            self.run_button = self.dlg.runButton
-            self.landmarks_err = self.dlg.landmarksLabel
-            self.benchmark_err = self.dlg.benchmarkLabel
-            self.t_points_err = self.dlg.turningpointsLabel
-            self.file_err = self.dlg.fileLabel
-            self.success = self.dlg.successLabel
+            # self.dlg = ArchTabsDialog()
+            # self.layers = QgsProject.instance().layerTreeRoot().children()
+            # self.turning_p_box = self.dlg.TurningPointsBox
+            # self.landmarks_box = self.dlg.LandmarksBox
+            # self.bench_box = self.dlg.BenchmarkBox
+            # self.turn_order = self.dlg.TurningOrder
+            # self.land_names = self.dlg.LandmarksName
+            # self.crs_box = self.dlg.CrsBox
+            # self.proj_check = self.dlg.ProjectionCheck
+            # self.mult_check = self.dlg.MultCheckBox
+            # self.start_spin = self.dlg.StartSpinBox
+            # self.end_spin = self.dlg.EndSpinBox
+            # self.add = self.dlg.AddButton
+            # self.parts_table = self.dlg.PartsTable
+            # self.multi_warn = self.dlg.MultiWarn
+            # self.rem_button = self.dlg.RemoveButton
+            # self.surf_check = self.dlg.SurfaceCheckBox
+            # self.surf_label = self.dlg.SurfaceLabel
+            # self.surf_box = self.dlg.SurfaceComboBox
+            # self.de_button = self.dlg.Deutch
+            # self.en_button = self.dlg.English
+            # self.ru_button = self.dlg.Russian
+            # self.run_button = self.dlg.runButton
+            # self.landmarks_err = self.dlg.landmarksLabel
+            # self.benchmark_err = self.dlg.benchmarkLabel
+            # self.t_points_err = self.dlg.turningpointsLabel
+            # self.file_err = self.dlg.fileLabel
+            # self.success = self.dlg.successLabel
             self.add.clicked.connect(self.insert_into_table)
             self.dlg.FileButton.clicked.connect(self.select_output_file)
 
@@ -510,24 +546,28 @@ class ArchTabs:
         self.clear_boxes()
         self.fill_boxes()
         self.show_fields_on_load()
+
         self.turning_p_box.activated.connect(lambda:
                                              self.show_fields("points"))
         self.landmarks_box.activated.connect(lambda:
                                              self.show_fields("names"))
+
         self.proj_check.clicked.connect(lambda: self.proj_checkbox())
         self.mult_check.clicked.connect(lambda: self.mult_checkbox())
         self.rem_button.clicked.connect(lambda: self.clear_table())
         self.surf_check.clicked.connect(lambda: self.surface_checkbox())
         self.set_labels()
-        self.run_button.clicked.connect(self.handle)
+        if self.run_button and self.crs_box:
+            self.run_button.clicked.connect(self.handle)
         self.crs_box.setCrs(QgsProject.instance().crs())
 
         # show the dialog
-        self.dlg.show()
+        if self.dlg:
+            self.dlg.show()
 
-        # Run the dialog event loop
-        result = self.dlg.exec_()
+            # Run the dialog event loop
+            result = self.dlg.exec_()
 
-        # See if Cancel was pressed
-        if result:
-            pass
+            # See if Cancel was pressed
+            if result:
+                pass

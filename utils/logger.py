@@ -1,10 +1,10 @@
 """ Logger settings """
 
 import logging
+import sys
 
 Log_Format = "%(levelname)s %(asctime)s - %(message)s"
-logging.basicConfig(filename="archtabs_log.log",
-                    filemode="w",
+logging.basicConfig(stream=sys.stdout,
                     format=Log_Format,
                     level=logging.ERROR)
 log = logging.getLogger()
