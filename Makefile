@@ -1,11 +1,11 @@
 #/***************************************************************************
 # ArchTabs
 #
-# This plugin allows you to get border description tables.
+# This plugin allows you to get border description
 #							 -------------------
-#		begin				: 2022-07-12
+#		begin				: 2022-08-09
 #		git sha				: $Format:%H$
-#		copyright			: (C) 2022 by Valery
+#		copyright			: (C) 2022 by Valery Shigaev
 #		email				: shigaevaler@gmail.com
 # ***************************************************************************/
 #
@@ -65,7 +65,7 @@ PEP8EXCLUDE=pydev,resources.py,conf.py,third_party,ui
 #	* Windows:
 #	  AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins'
 
-QGISDIR=/home/shiga/.local/share/QGIS/QGIS3/profiles/default/python/plugins/
+QGISDIR=C:\Users\shiga\AppData/Roaming/QGIS/QGIS3/profiles/default/python/plugins
 
 #################################################
 # Normally you would not need to edit below here
