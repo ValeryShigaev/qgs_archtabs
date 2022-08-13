@@ -1,5 +1,4 @@
 from typing import Callable
-from .logger import log
 
 
 def error_handler(sign: str) -> Callable:
@@ -16,12 +15,12 @@ def error_handler(sign: str) -> Callable:
         def wrapper(*args, **kwargs) -> bool:
             try:
                 func(*args, **kwargs)
-                log.error(sign)
-                log.error("success")
+                print(sign)
+                print("success")
                 return True
             except Exception as e:
-                log.error(sign)
-                log.error(e)
+                print(sign)
+                print(e)
                 return False
         return wrapper
     return decorator

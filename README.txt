@@ -1,10 +1,10 @@
 Plugin Builder Results
 
 Your plugin ArchTabs was created in:
-    /home/shiga/PycharmProjects/ArchTabs/archtabs
+    C:/Users/shiga/AppData/Roaming/QGIS/QGIS3/profiles/default/python/plugins\archtabs
 
 Your QGIS plugin directory is located at:
-    /home/shiga/.local/share/QGIS/QGIS3/profiles/default/python/plugins
+    C:/Users/shiga/AppData/Roaming/QGIS/QGIS3/profiles/default/python/plugins
 
 What's Next:
 

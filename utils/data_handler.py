@@ -128,11 +128,11 @@ class DataHandler:
                 result = f"{values['names'][counter]} " \
                          f"{self.land_str[values['lang']][1]}. " \
                          f"{direction} " \
-                         f"{round(geom.length(), 2)}" \
+                         f"{int(geom.length())}" \
                          f"{self.land_str[values['lang']][0]}"
                 self.landmarks_data["Nm"].append(values['names'][counter])
                 self.landmarks_data["Az"].append(direction)
-                self.landmarks_data["Len"].append(round(geom.length(), 2))
+                self.landmarks_data["Len"].append(int(geom.length()))
                 feature["Data"] = result
                 layer.updateFeature(feature)
                 counter += 1
@@ -170,12 +170,14 @@ class DataHandler:
                 self.coord_data["Y"].append(
                     self.decimal_to_dms(feature.x()))
                 count += 1
-            tr = QgsCoordinateTransform(wgs, values["crs"], instance)
+            tr2 = QgsCoordinateTransform(wgs, values["crs"], instance)
             for feature in p_feature:
-                feature.transform(tr)
+                feature.transform(tr2)
                 feature = feature.asPoint()
                 self.coord_data["X1"].append(round(feature.y(), 3))
                 self.coord_data["Y1"].append(round(feature.x(), 3))
+            points.commitChanges()
+
 
     def borders_handler(self, values: Dict[str, any]):
         """
@@ -319,6 +321,7 @@ class DataHandler:
                 if line.crosses(feat[0]) or line.intersects(feat[0]):
                     layers.append(feat[1])
             return ", ".join(layers)
+
 
     def lang_select(self, values: Dict) -> str:
         """
