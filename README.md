@@ -15,9 +15,9 @@ The output is saved in the format of MS Excel.
 If you do not specify a reference point and/or do not specify landmarks, only coordinate data and a description of the border will be saved
 The output looks like:
 - Landmarks</br>
-<img src="http://cp82453.tmweb.ru/public_images/archtabs_image3.jpg">
+<img src="http://cp82453.tmweb.ru/public_images/archtabs_image3.jpg"></br>
 - Coordinates</br>
-<img src="http://cp82453.tmweb.ru/public_images/archtabs_image4.jpg">
+<img src="http://cp82453.tmweb.ru/public_images/archtabs_image4.jpg"></br>
 - Border description</br>
 <img src="http://cp82453.tmweb.ru/public_images/archtabs_image5.jpg"> 
 
