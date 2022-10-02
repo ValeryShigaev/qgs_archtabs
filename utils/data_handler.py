@@ -402,11 +402,11 @@ class DataHandler:
         elif 33.75 <= az <= 56.25:
             return "NE" if lang is "English" or lang is "Deutsch" else "СВ"
         elif 56.25 <= az <= 78.75:
-            return "EEN" if lang is "English" or lang is "Deutsch" else "ВВС"
+            return "EEN" if lang is "English" or lang is "Deutsch" else "ВСВ"
         elif 78.75 <= az <= 101.25:
             return "E" if lang is "English" or lang is "Deutsch" else "В"
         elif 101.25 <= az <= 123.75:
-            return "EES" if lang is "English" or lang is "Deutsch" else "ВВЮ"
+            return "EES" if lang is "English" or lang is "Deutsch" else "ВЮВ"
         elif 123.75 <= az <= 146.25:
             return "SE" if lang is "English" or lang is "Deutsch" else "ЮВ"
         elif 146.25 <= az <= 168.75:
@@ -418,11 +418,11 @@ class DataHandler:
         elif 213.75 <= az <= 236.25:
             return "SW" if lang is "English" or lang is "Deutsch" else "ЮЗ"
         elif 236.25 <= az <= 258.75:
-            return "WWS" if lang is "English" or lang is "Deutsch" else "ЗЗЮ"
+            return "WWS" if lang is "English" or lang is "Deutsch" else "ЗЮЗ"
         elif 258.75 <= az <= 281.25:
             return "W" if lang is "English" or lang is "Deutsch" else "З"
         elif 281.25 <= az <= 303.75:
-            return "WWN" if lang is "English" or lang is "Deutsch" else "ЗЗC"
+            return "WWN" if lang is "English" or lang is "Deutsch" else "ЗСЗ"
         elif 303.75 <= az <= 326.25:
             return "WN" if lang is "English" or lang is "Deutsch" else "CЗ"
         elif 326.25 <= az <= 348.75:

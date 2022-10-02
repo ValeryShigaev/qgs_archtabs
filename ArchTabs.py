@@ -228,15 +228,19 @@ class ArchTabs:
         """ Collects project layers """
 
         if isinstance(layer, QgsLayerTreeLayer):
-            if layer.layer().type() == QgsMapLayer.VectorLayer:
-                results.append(layer.layer().name())
+            try:
+                if layer.layer().type() == QgsMapLayer.VectorLayer:
+                    results.append(layer.layer().name())
+            except Exception as e:
+                self.iface.messageBar().pushMessage("Warning",
+                                                    f"Some layers collapsed {e}",
+                                                    level=Qgis.Warning)
         elif isinstance(layer, QgsLayerTreeGroup):
             for lyr in layer.children():
                 self.layers_list_gen(lyr, results)
         else:
             results.append(None)
         return results
-
 
     def fill_boxes(self) -> None:
         try:
